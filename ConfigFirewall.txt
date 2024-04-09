@@ -1,0 +1,21 @@
+1.Bloquear acesso do ip 10.0.0.2 ao serviço http disponível no servidor 192.168.10.4
+access-list 103 deny tcp 10.0.0.2 host 192.168.10.4 eq 80
+3.Bloquear acesso do ip 10.0.0.3 apenas ao serviço http disponível no servidor 192.168.10.4
+access-list 103 permit host 10.0.0.3 host 192.168.10.4
+interface gig0/1
+ip access-group 103 in
+
+
+2.Bloquear acesso do ip 10.0.0.3 ao serviço ssh disponível no servidor 172.16.1.4
+access-list 104 deny tcp 10.0.0.3 host 172.16.1.4 eq 22
+access-list 104 permit any any
+interface gig0/1
+access-group 104 in
+
+4.O acesso aos demais endereços/serviços disponíveis na rede 192.168.1.0 deverão estar proibidos para o ip 10.0.0.3
+access-list 105 permit tcp host 10.0.0.3 host 192.168.10.4 eq 80
+access-list 105 deny ip host 10.0.0.3 192.168.10.0 0.0.0.255
+access-list 105 permit ip any any
+interface gig0/1
+ip access-group105 in
+
